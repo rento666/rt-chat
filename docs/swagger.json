@@ -1,0 +1,337 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/v1/tool/60s": {
+            "get": {
+                "tags": [
+                    "每天60秒看世界"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"id\": \"str\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/tool/go_captcha_check_data": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "校验验证码"
+                ],
+                "parameters": [
+                    {
+                        "description": "{dots:",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/tcaptcha.Che"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "bool"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/tool/go_captcha_data": {
+            "get": {
+                "tags": [
+                    "生成验证码"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "captcha",
+                        "schema": {
+                            "$ref": "#/definitions/tcaptcha.Ct"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/user/judge": {
+            "get": {
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "判断用户是否存在",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "账号",
+                        "name": "Identifier",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "账号类型",
+                        "name": "IdentityType",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "bool"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/user/list": {
+            "get": {
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "用户列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码数量",
+                        "name": "pageNum",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页大小",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "模糊搜索关键字",
+                        "name": "keyword",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "是否反向搜索",
+                        "name": "desc",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "list",
+                        "schema": {
+                            "$ref": "#/definitions/userview.UserList"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/user/login": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "用户登录",
+                "parameters": [
+                    {
+                        "description": "{Info}",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/userview.LoginVo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/user/register": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "新增用户",
+                "parameters": [
+                    {
+                        "description": "{IdentityType,Identifier,Credential,Code}",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/userview.RegisterVo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/user/register_code": {
+            "get": {
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "注册验证码",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "账号",
+                        "name": "Identifier",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "账号类型",
+                        "name": "IdentityType",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "tcaptcha.Che": {
+            "type": "object"
+        },
+        "tcaptcha.Ct": {
+            "type": "object",
+            "properties": {
+                "captchaKey": {
+                    "type": "string"
+                },
+                "imgBase64": {
+                    "type": "string"
+                },
+                "thumbBase64": {
+                    "type": "string"
+                }
+            }
+        },
+        "userview.Ident": {
+            "type": "object",
+            "properties": {
+                "credential": {
+                    "type": "string"
+                },
+                "identifier": {
+                    "type": "string"
+                },
+                "identityType": {
+                    "type": "string"
+                }
+            }
+        },
+        "userview.LoginVo": {
+            "type": "object",
+            "properties": {
+                "info": {
+                    "type": "string"
+                }
+            }
+        },
+        "userview.RegisterVo": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "credential": {
+                    "type": "string"
+                },
+                "identifier": {
+                    "type": "string"
+                },
+                "identityType": {
+                    "type": "string"
+                }
+            }
+        },
+        "userview.UserList": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "authList": {
+                    "description": "------- 因为用户有多种登录方式，所以这里存储账密的切片",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/userview.Ident"
+                    }
+                },
+                "avatar": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "isDeleted": {
+                    "description": "与deletedAt是否为空有关，为空是启用，不为空是删除——【软删除技术】",
+                    "type": "boolean"
+                },
+                "nickname": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "boolean"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

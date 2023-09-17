@@ -1,0 +1,18 @@
+mysql:
+  dbname: rc
+  path: 127.0.0.1
+  port: 3307
+  username: root
+  password: 123456
+  config: parseTime=True&loc=Local&charset=utf8mb4
+redis:
+  addr: 127.0.0.1:6379
+  password:
+encrypt:
+  filepath: ./tkey/
+  separator: |
+email:
+  host: smtp.office365.com
+  port: 587
+  username: putongruwo@outlook.com
+  password: 040413rt..
