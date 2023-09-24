@@ -147,7 +147,7 @@ func List(c *gin.Context) {
 	msg := "请求参数有误"
 	var data any
 	if c.ShouldBindQuery(&p) == nil {
-		// {pageNum int 页码数量,pageSize int 分页大小,,keyword string 模糊搜索关键字,desc bool 是否反向搜索}
+		// {pageNum int 页码数量,pageSize int 分页大小,keyword string 模糊搜索关键字,desc bool 是否反向搜索}
 		if p.PageNum <= 0 {
 			p.PageNum = 1
 		}
