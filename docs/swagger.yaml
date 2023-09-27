@@ -101,6 +101,26 @@ paths:
             $ref: '#/definitions/tcaptcha.Ct'
       tags:
       - 生成验证码
+  /v1/user/delete/{uuid}:
+    delete:
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        type: string
+      - description: user_basic表的uuid
+        in: path
+        name: uuid
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: bool
+      summary: 删除用户
+      tags:
+      - 用户模块
   /v1/user/judge:
     get:
       parameters:

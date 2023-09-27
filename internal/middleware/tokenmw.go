@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -66,4 +67,15 @@ func AuthRequired() gin.HandlerFunc {
 		c.Set("user_auth", u)
 		c.Next()
 	}
+}
+
+func GetAuthByToken(c *gin.Context) (user.Auth, error) {
+	// 从token那里获取user_auth
+	value, exists := c.Get("user_auth")
+	if !exists {
+		fmt.Println("token isn't exists!")
+		return user.Auth{}, errors.New("无法从token处获取用户信息")
+	}
+	auth := value.(user.Auth)
+	return auth, nil
 }

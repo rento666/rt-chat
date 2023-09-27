@@ -21,4 +21,7 @@ $ go get -u github.com/wenlng/go-captcha/captcha
 
 // redis
 go get github.com/redis/go-redis/v9
+
+// websocket
+go get github.com/gorilla/websocket
 ```

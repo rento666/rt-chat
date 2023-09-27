@@ -66,6 +66,37 @@
                 }
             }
         },
+        "/v1/user/delete/{uuid}": {
+            "delete": {
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "删除用户",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "user_basic表的uuid",
+                        "name": "uuid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "bool"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/user/judge": {
             "get": {
                 "tags": [

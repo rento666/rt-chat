@@ -66,3 +66,21 @@ func GetExpiration(redisClient *redis.Client, key string) (time.Duration, error)
 	}
 	return expire, nil
 }
+
+//const (
+//	PublishKey = "websocket"
+//)
+//
+//// Publish 发布redis消息
+//func Publish(ctx context.Context, channel string, msg string) error {
+//	var err error
+//	err = global.REDIS.Publish(ctx, channel, msg).Err()
+//	return err
+//}
+//
+//// Subscribe 订阅redis消息
+//func Subscribe(ctx context.Context, channel string) (string, error) {
+//	sub := global.REDIS.Subscribe(ctx, channel)
+//	msg, err := sub.ReceiveMessage(ctx)
+//	return msg.Payload, err
+//}

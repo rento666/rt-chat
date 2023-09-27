@@ -101,6 +101,17 @@ func GetUserListFunc(p result.Page) ([]UserList, error) {
 	return getList(p)
 }
 
+// DeleteByUuidFunc 删除用户函数，成功返回nil，失败返回error
+func DeleteByUuidFunc(uuid string) error {
+	// 查询得到 *user.Basic
+	ub, err := findByUUID(uuid)
+	if err != nil {
+		return err
+	}
+	deleteOne(ub)
+	return nil
+}
+
 // ------------func分界线----------
 
 // judgeExist 根据类型、账号来判断用户是否存在
@@ -199,7 +210,7 @@ func addUserDB(username string, form RegisterVo) (uint, error) {
 	// 昵称取随机的,用了个github的库(github.com/DanPlayer/。。。)
 	nickname := randomname.GenerateName()
 	// 向数据库添加该字段 添加两个授权、一个基础
-	base := &user.Basic{Uuid: UUID, Nickname: nickname, Status: true}
+	base := &user.Basic{Uuid: UUID, Nickname: nickname, Status: user.NORMAL}
 	switch form.IdentityType {
 	case user.EMAIL:
 		base.Email = form.Identifier
@@ -240,10 +251,11 @@ func decryptLoginData(form LoginVo) (user.Auth, error) {
 	}
 	// type
 	identityType := fs[0]
-	// aes解密
-	temp, _ := tencrypt.AesDecrypt(ttrans.String2Bytes(fs[1]))
-	// identifier
-	identifier := ttrans.Bytes2String(temp)
+	//// aes解密
+	//temp, _ := tencrypt.AesDecrypt(ttrans.String2Bytes(fs[1]))
+	//// identifier
+	//identifier := ttrans.Bytes2String(temp)
+	identifier := fs[1]
 	// credential
 	credential := tencrypt.MD5Encrypt(fs[2])
 	return user.Auth{IdentityType: identityType, Identifier: identifier, Credential: credential}, nil
@@ -307,4 +319,27 @@ func getList(page result.Page) ([]UserList, error) {
 	}
 
 	return userList, nil
+}
+
+// findByUUID 根据uuid查询用户user_basic表，成功返回*user_basic,nil，失败返回nil,error
+func findByUUID(uuid string) (*user.Basic, error) {
+	ub := new(user.Basic)
+	err := global.DB.First(ub, "uuid = ?", uuid).Error
+	if err != nil {
+		return nil, err
+	}
+	return ub, nil
+}
+
+// deleteOne 软删除用户信息，需要将basic和auth表都删除
+func deleteOne(ub *user.Basic) error {
+
+	// 根据ub的id查询user_auth表
+	basicId := ub.ID
+
+	// 软删除user_auth表(根据basic_id批量删除)
+	global.DB.Where("basic_id = ?", basicId).Delete(&user.Auth{})
+	// 软删除user_basic表
+	global.DB.Delete(ub)
+	return nil
 }

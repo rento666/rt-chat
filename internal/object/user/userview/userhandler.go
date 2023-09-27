@@ -162,3 +162,29 @@ func List(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, result.Json(code, msg, data))
 }
+
+// Delete 删除用户，并不是真的删除，是软删除
+// @Summary 删除用户
+// @Tags 用户模块
+// Produce json
+// @Param Authorization header string false "Bearer 用户令牌"
+// @param uuid path string true "user_basic表的uuid"
+// @Success 200 {bool} isDeleted
+// @Router /v1/user/delete/{uuid} [delete]
+func Delete(c *gin.Context) {
+	uuid := c.Param("uuid")
+	code := http.StatusBadRequest
+	msg := "没有需要删除的用户"
+	var data any
+	if uuid != "" {
+		err := DeleteByUuidFunc(uuid)
+		if err != nil {
+			msg = "删除失败"
+			data = "fail"
+		} else {
+			msg = "删除成功"
+			data = "ok"
+		}
+	}
+	c.JSON(http.StatusOK, result.Json(code, msg, data))
+}

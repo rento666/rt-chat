@@ -14,6 +14,11 @@ func Api(v *gin.RouterGroup) {
 		user.GET("/register_code", userview.RegisterCode)
 		user.GET("/judge", userview.JudgeUserExist)
 		user.POST("/login", userview.Login)
-		user.GET("/list", middleware.AuthRequired(), userview.List)
+		// 需要token
+		user.Use(middleware.AuthRequired())
+		{
+			user.GET("/list", userview.List)
+			user.DELETE("/delete/:uuid", userview.Delete)
+		}
 	}
 }

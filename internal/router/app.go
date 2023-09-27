@@ -7,6 +7,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"rt-chat/internal/api/system"
 	"rt-chat/internal/api/toolapi"
+	"rt-chat/internal/object/ws/clientview"
 )
 
 func Router() *gin.Engine {
@@ -28,6 +29,9 @@ func Router() *gin.Engine {
 
 		// 挂载swagger
 		v1.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+		// 挂载websocket
+		v1.GET("/ws", clientview.WebSocketStart)
 	}
 	fmt.Println("router初始化成功...")
 	return r

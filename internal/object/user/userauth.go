@@ -4,6 +4,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// IdentityType类型
 const (
 	EMAIL  = "email"
 	PHONE  = "phone"
